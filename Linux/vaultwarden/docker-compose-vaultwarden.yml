@@ -1,0 +1,17 @@
+# 参考 https://github.com/dani-garcia/vaultwarden/wiki/Configuration-overview
+version: '3'
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    ports:
+      - "3001:80"
+      - "3012:3012"                # WebSocket端口
+    volumes:
+      - ./vw-data:/data
+    environment:
+      WEBSOCKET_ENABLED: "true"    # 启用 WebSocket 通知
+      SIGNUPS_ALLOWED: "true"      # 启用新用户注册
+      WEB_VAULT_ENABLED: "true"
+      ADMIN_TOKEN: "zhXFWhcLGBGRYMa65trVvjKBQww8Dux84ZFDIHNXD488da6Td7yhi/n7+ZEwFDup"   # 启用管理界面，使用openssl rand -base64 48生成
