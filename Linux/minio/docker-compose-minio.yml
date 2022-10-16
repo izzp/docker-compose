@@ -1,0 +1,25 @@
+# 参考 https://docs.min.io/docs/minio-docker-quickstart-guide.html
+version: '3'
+services:
+  minio:
+    image: minio/minio:latest                         # 原镜像`minio/minio:latest`
+    container_name: minio                             # 容器名为'minio'
+    restart: unless-stopped                           # 指定容器退出后的重启策略
+    volumes:                                          # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./minio/data:/data"
+      - "./minio/minio:/minio"
+      - "./minio/config:/root/.minio"
+    environment:                                      # 设置环境变量
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      MINIO_PROMETHEUS_AUTH_TYPE: "public"
+      MINIO_ACCESS_KEY: "root"                        # 登录账号
+      MINIO_SECRET_KEY: "password"                    # 登录密码
+    command: server /data  --console-address ":9001"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    ports:                              # 映射端口
+      - "9001:9001"
+      - "42330:42330"
