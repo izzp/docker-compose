@@ -6,6 +6,7 @@
 
 
 1. [Bark](./Linux/bark)
+1. [Gitea](./Linux/gitea)
 1. [MinIO](./Linux/minio)
 1. [MySQL](./Linux/mysql)
 1. [Tomcat](./Linux/tomcat)
