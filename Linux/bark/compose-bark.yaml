@@ -1,0 +1,10 @@
+version: '3'
+services:
+  bark-server:
+    image: finab/bark-server
+    container_name: bark-server
+    restart: always
+    volumes:
+      - ./data:/data
+    ports:
+      - "3002:8080"
