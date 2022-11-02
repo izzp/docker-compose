@@ -4,7 +4,7 @@
 GREEN="\033[1;32m"
 RESET="$(tput sgr0)"
 
-docker-compose -f compose-gitea.yaml -p gitea up -d
+docker-compose -p gitea up -d
 
 printf "${GREEN}"
 cat <<EOF

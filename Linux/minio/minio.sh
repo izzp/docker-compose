@@ -4,7 +4,7 @@
 GREEN="\033[1;32m"
 RESET="$(tput sgr0)"
 
-docker-compose -f docker-compose-minio.yml -p minio up -d
+docker-compose -p minio up -d
 
 printf "${GREEN}"
 cat <<EOF

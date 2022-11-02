@@ -4,7 +4,7 @@
 GREEN="\033[1;32m"
 RESET="$(tput sgr0)"
 
-docker-compose -f docker-compose-tomcat.yml -p tomcat up -d
+docker-compose -p tomcat up -d
 
 printf "${GREEN}"
 cat <<EOF

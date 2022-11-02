@@ -4,7 +4,7 @@
 GREEN="\033[1;32m"
 RESET="$(tput sgr0)"
 
-docker-compose -f compose-bark.yaml -p bark up -d
+docker-compose -p bark up -d
 
 printf "${GREEN}"
 cat <<EOF

@@ -4,7 +4,7 @@
 GREEN="\033[1;32m"
 RESET="$(tput sgr0)"
 
-docker-compose -f docker-compose-vaultwarden.yml -p vaultwarden up -d
+docker-compose -p vaultwarden up -d
 
 printf "${GREEN}"
 cat <<EOF
