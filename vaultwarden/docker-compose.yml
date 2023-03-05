@@ -12,6 +12,7 @@ services:
       - ./vw-data:/data
     environment:
       WEBSOCKET_ENABLED: "true"    # 启用 WebSocket 通知
-      SIGNUPS_ALLOWED: "true"      # 启用新用户注册
+      SIGNUPS_ALLOWED: "true"     # 启用新用户注册
       WEB_VAULT_ENABLED: "true"
+      ORG_EVENTS_ENABLED: "true"    # 启用组织的事件日志
       ADMIN_TOKEN: "zhXFWhcLGBGRYMa65trVvjKBQww8Dux84ZFDIHNXD488da6Td7yhi/n7+ZEwFDup"   # 启用管理界面，使用openssl rand -base64 48生成
