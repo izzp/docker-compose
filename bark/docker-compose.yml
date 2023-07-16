@@ -5,6 +5,6 @@ services:
     container_name: bark-server
     restart: always
     volumes:
-      - ./data:/data
+      - $HOME/docker/bark/data:/data
     ports:
       - "3002:8080"

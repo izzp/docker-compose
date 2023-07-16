@@ -9,7 +9,7 @@ services:
       - "3001:80"
       - "3012:3012"                # WebSocket端口
     volumes:
-      - ./vw-data:/data
+      - $HOME/docker/vaultwarden/vw-data:/data
     environment:
       WEBSOCKET_ENABLED: "true"    # 启用 WebSocket 通知
       SIGNUPS_ALLOWED: "true"     # 启用新用户注册

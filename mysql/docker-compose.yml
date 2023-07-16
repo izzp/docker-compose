@@ -3,7 +3,7 @@ services:
   mysql:
     restart: always
     # 使用的镜像
-    image: mysql:5.7.22
+    image: mysql:5.7.42
     container_name: mysql
     # 定义端口
     ports:
@@ -20,7 +20,4 @@ services:
       --sql-mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"
     # 定义挂载点
     volumes:
-      - mysql-data:/var/lib/mysql
-
-volumes:
-  mysql-data:
+      - $HOME/docker/mysql/mysql-data:/var/lib/mysql

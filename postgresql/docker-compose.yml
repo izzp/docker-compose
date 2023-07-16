@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgresql:
+    image: postgres:14.5                    # 镜像'postgres:14.5'
+    container_name: postgresql                                                          # 容器名为'postgresql'
+    restart: unless-stopped                                                              # 指定容器重启策略
+    # 设置环境变量
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      ALLOW_IP_RANGE: 0.0.0.0/0 # 允许所有ip访问
+    # 数据卷挂载路径设置,将本机目录映射到容器目录
+    volumes:
+      - "$HOME/docker/postgresql/data:/var/lib/postgresql/data"
+    # 映射端口
+    ports:
+      - "5432:5432"
