@@ -11,4 +11,5 @@
 7. [Postgresql](./postgresql)
 8. [qBittorrent](./qbittorrent)
 9. [Tomcat](./tomcat)
-10. [Vaultwarden](./vaultwarden)
+10. [uptime-kuma](./uptime-kuma)
+11. [Vaultwarden](./vaultwarden)
