@@ -1,7 +1,7 @@
 version: '3'
 services:
   bark-server:
-    image: finab/bark-server
+    image: finab/bark-server:latest
     container_name: bark-server
     restart: always
     volumes:
