@@ -3,7 +3,7 @@ services:
   mysql:
     restart: always
     # 使用的镜像
-    image: mysql:5.7.43
+    image: mysql:latest
     container_name: mysql
     # 定义端口
     ports:
