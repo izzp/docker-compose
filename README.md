@@ -13,3 +13,4 @@
 9. [Tomcat](./tomcat)
 10. [uptime-kuma](./uptime-kuma)
 11. [Vaultwarden](./vaultwarden)
+12. [Nacos](./nacos)
