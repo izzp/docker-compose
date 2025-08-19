@@ -1,0 +1,35 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    restart: unless-stopped
+    ports:
+      - "${SQLSERVER_PORT}:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SQLSERVER_SA_PASSWORD}
+      - MSSQL_PID=${SQLSERVER_PID}
+      - TZ=${SQLSERVER_TZ}
+    volumes:
+      - mssql_data:/var/opt/mssql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: ${SQLSERVER_MEM_LIMIT}
+        reservations:
+          memory: ${SQLSERVER_MEM_RESERVATION}
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S tcp:127.0.0.1,1433 -U sa -P \"$${SA_PASSWORD}\" -Q \"SELECT 1\" -N o || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+volumes:
+  mssql_data:
+    name: mssql_data
+
