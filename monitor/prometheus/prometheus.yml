@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s   # 每 15 秒抓取一次
+
+scrape_configs:
+  - job_name: 'node_exporter_via_nginx'
+    metrics_path: '/metrics'
+    scheme: http
+    static_configs:
+      - targets: ['host1:39100', 'host2:39100']  # 替换为实际的主机:端口 列表
