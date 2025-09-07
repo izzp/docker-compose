@@ -1,5 +1,4 @@
 # 参考 https://github.com/dani-garcia/vaultwarden/wiki/Configuration-overview
-version: '3'
 services:
   vaultwarden:
     image: vaultwarden/server:latest
@@ -15,3 +14,8 @@ services:
       ORG_EVENTS_ENABLED: "true"    # 启用组织的事件日志
       LOG_FILE: "$HOME/docker/vaultwarden/vaultwarden.log"  #日志
       ADMIN_TOKEN: "zhXFWhcLGBGRYMa65trVvjKBQww8Dux84ZFDIHNXD488da6Td7yhi/n7+ZEwFDup"   # 启用管理界面，使用openssl rand -base64 48生成
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

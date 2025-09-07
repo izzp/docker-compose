@@ -1,0 +1,38 @@
+# OpenResty 服务的 docker-compose 配置（使用环境变量，可将数据与配置放到项目目录外）
+
+services:
+  openresty:
+    # 从 .env 读取镜像地址和标签
+    image: ${OPENRESTY_IMAGE}
+    container_name: openresty
+    restart: unless-stopped
+    # 端口映射，支持 HTTP 和 HTTPS（容器端口固定为 80）
+    ports:
+      - "${PORT_HTTP}:80"
+      # - "${PORT_HTTPS}:443"
+    # 环境变量：时区和语言
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    # 挂载网站目录，使用 .env 中的 WEBSITE_DIR
+    volumes:
+      - ${LOGS_PATH}:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+      - ${WEBSITE_DIR}:/usr/local/openresty/nginx/html:ro
+      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+    # 资源限制（0 表示不限制）
+    cpus: ${CPUS}
+    mem_limit: ${MEMORY_LIMIT}
+    # 健康检查：优先使用 curl，其次尝试 wget，最后回退检查 nginx 进程是否存在
+    healthcheck:
+      test: ["CMD-SHELL", "if command -v curl >/dev/null 2>&1; then curl -fsS -o /dev/null -w '%{http_code}' http://localhost:80/health | grep -q 200; elif command -v wget >/dev/null 2>&1; then wget -qO- http://localhost:80/health >/dev/null; elif [ -s /usr/local/openresty/nginx/logs/nginx.pid ] && kill -0 $(cat /usr/local/openresty/nginx/logs/nginx.pid) >/dev/null 2>&1; then exit 0; else exit 1; fi"]
+      # 检查间隔、超时、重试次数和容器启动预热期
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+

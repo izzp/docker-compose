@@ -1,6 +1,6 @@
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mssql/server:2019-latest
     container_name: mssql
     restart: unless-stopped
     ports:
@@ -32,4 +32,3 @@ services:
 volumes:
   mssql_data:
     name: mssql_data
-

@@ -1,10 +1,7 @@
 # 参考 https://docs.gitea.io/zh-cn/install-with-docker/
-version: "3"
-
 networks:
   gitea:
     external: false
-
 services:
   server:
     image: gitea/gitea:latest
@@ -16,9 +13,13 @@ services:
     networks:
       - gitea
     volumes:
-      - $HOME/docker/gitea:/data
+      - ./gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
       - "222:22"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"

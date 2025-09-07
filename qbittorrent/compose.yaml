@@ -1,5 +1,4 @@
 # 参考 https://hub.docker.com/r/linuxserver/qbittorrent
-version: "2.1"
 services:
   qbittorrent:
     image: linuxserver/qbittorrent:latest
@@ -17,3 +16,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"

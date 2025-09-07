@@ -1,5 +1,4 @@
 # 参考 https://docs.min.io/docs/minio-docker-quickstart-guide.html
-version: '3'
 services:
   minio:
     image: minio/minio:latest                         # 镜像

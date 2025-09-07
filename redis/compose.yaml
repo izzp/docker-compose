@@ -1,0 +1,21 @@
+services:
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./logs:/var/log/redis
+    environment:
+      - TZ=${TZ:-Asia/Shanghai}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$REDIS_PASSWORD\" ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped

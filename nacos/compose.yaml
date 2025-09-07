@@ -21,3 +21,7 @@ services:
       - NACOS_AUTH_TOKEN=${NACOS_AUTH_TOKEN}
     volumes:
       - ./config/custom.properties:/home/nacos/init.d/custom.properties
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"

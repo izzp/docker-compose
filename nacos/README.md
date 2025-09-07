@@ -10,7 +10,7 @@
 3. 运行以下命令启动服务：
 
 ```powershell
-docker-compose up -d
+docker compose up -d
 ```
 
 4. 服务启动后，访问 `http://localhost:8848/nacos`。

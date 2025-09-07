@@ -5,14 +5,14 @@
 概览
 
 - Prometheus：配置文件位于 `monitor/prometheus/prometheus.yml`，数据卷 `prometheus_data`。Compose 在 `monitor/compose.yml` 中定义。
-- Grafana：在 `monitor/compose.yml` 中定义，默认管理账号在 `monitor/compose.yml` 中设置（请修改默认密码）。
+- Grafana：在 `monitor/compose.yml` 中定义。
 - node_exporter + 代理（OpenResty）：每台被监控主机运行 `monitor/node` 下的 Compose，使用 OpenResty 作为反向代理（监听 39100）并通过 IP 白名单限制访问。代理配置位于 `monitor/node/nginx/conf.d/default.conf`。
 
 快速使用
 
 1. 启动整体监控（在监控主机）：
 
-   ```powershell
+   ```bash
    cd monitor
    docker compose up -d
    ```
