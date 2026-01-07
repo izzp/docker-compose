@@ -1,0 +1,13 @@
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+http.port: 9200
+
+# 开启es跨域
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+http.cors.allow-headers: Authorization,Content-Type
+
+# 安全配置通过环境变量控制
+# xpack.security.enabled: true
+# xpack.security.http.ssl.enabled: false
+# xpack.security.transport.ssl.enabled: false

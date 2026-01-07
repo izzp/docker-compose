@@ -1,0 +1,24 @@
+# Kibana 配置文件
+
+server.name: kibana
+server.host: "0.0.0.0"
+server.port: 5601
+
+# Elasticsearch 连接配置（使用服务名）
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+# 认证信息通过环境变量 ELASTICSEARCH_USERNAME 和 ELASTICSEARCH_PASSWORD 传递
+
+# 中文界面
+i18n.locale: zh-CN
+
+# 日志配置
+logging:
+  appenders:
+    file:
+      type: file
+      fileName: /usr/share/kibana/logs/kibana.log
+      layout:
+        type: json
+  root:
+    level: info

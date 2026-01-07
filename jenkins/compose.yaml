@@ -1,0 +1,21 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:${JENKINS_VERSION:-lts}
+    container_name: jenkins
+    restart: unless-stopped
+    privileged: true
+    user: root
+    environment:
+      TZ: Asia/Shanghai
+      JAVA_OPTS: -Duser.timezone=Asia/Shanghai
+    ports:
+      - "${JENKINS_HTTP_PORT:-8080}:8080"
+      - "${JENKINS_AGENT_PORT:-50000}:50000"
+    volumes:
+      - ./data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/login || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5

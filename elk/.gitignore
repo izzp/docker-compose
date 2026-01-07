@@ -1,0 +1,13 @@
+# 环境变量文件
+.env
+
+# 数据目录
+elk/elasticsearch/data/
+elk/elasticsearch/logs/
+elk/logstash/data/
+elk/logstash/logs/
+elk/kibana/logs/
+
+# 临时文件
+*.tmp
+*.log

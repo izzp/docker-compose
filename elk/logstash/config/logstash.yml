@@ -1,0 +1,18 @@
+# Logstash 配置文件
+
+# API 配置
+api.http.host: "0.0.0.0"
+api.http.port: 9600
+
+# Pipeline 配置
+pipeline.workers: 2
+pipeline.batch.size: 125
+pipeline.batch.delay: 50
+
+# 队列配置
+queue.type: memory
+queue.max_bytes: 1gb
+
+# 日志配置
+log.level: info
+path.logs: /usr/share/logstash/logs

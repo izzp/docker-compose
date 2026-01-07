@@ -1,0 +1,125 @@
+# 网桥elk -> 方便相互通讯
+networks:
+  elk:
+
+services:
+  elasticsearch:
+    image: elasticsearch:${ELK_VERSION:-9.2.1}
+    container_name: elk_elasticsearch
+    restart: unless-stopped
+    volumes:
+      - "./elasticsearch/data:/usr/share/elasticsearch/data"
+      - "./elasticsearch/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xmx${ES_HEAP_SIZE:-1g} -Xms${ES_HEAP_SIZE:-1g}"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      xpack.security.enabled: true
+      xpack.security.http.ssl.enabled: false
+      xpack.security.transport.ssl.enabled: false
+      bootstrap.memory_lock: false
+      cluster.routing.allocation.disk.threshold_enabled: true
+      cluster.routing.allocation.disk.watermark.low: 85%
+      cluster.routing.allocation.disk.watermark.high: 90%
+    ports:
+      - "${ES_PORT:-9200}:9200"
+      - "9300:9300"
+    networks:
+      - elk
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u elastic:${ELASTIC_PASSWORD} http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  kibana:
+    image: kibana:${ELK_VERSION:-9.2.1}
+    container_name: elk_kibana
+    restart: unless-stopped
+    volumes:
+      - "./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-${ELASTIC_PASSWORD}}
+      I18N_LOCALE: zh-CN
+      SERVER_PUBLICBASEURL: ${KIBANA_PUBLIC_URL:-}
+      XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: ${KIBANA_ENCRYPTION_KEY:-a7a6311933d3503b89bc2dbc36572c33a6c10925682e591bffcab6911c06786d}
+    ports:
+      - "${KIBANA_PORT:-5601}:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - elk
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+
+  logstash:
+    image: logstash:${ELK_VERSION:-9.2.1}
+    container_name: elk_logstash
+    restart: unless-stopped
+    environment:
+      LS_JAVA_OPTS: "-Xmx${LS_HEAP_SIZE:-512m} -Xms${LS_HEAP_SIZE:-512m}"
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+    volumes:
+      - "./logstash/data:/usr/share/logstash/data"
+      - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "./logstash/config/pipelines:/usr/share/logstash/config/pipelines"
+    command: logstash -f /usr/share/logstash/config/pipelines
+    ports:   
+      - "9600:9600"
+      - "${LOGSTASH_TCP_PORT:-38001}:38001"
+      - "${LOGSTASH_BEATS_PORT:-5044}:5044"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - elk
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9600/_node/stats || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
