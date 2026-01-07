@@ -1,0 +1,25 @@
+# mkdir -p data && chown -R 999:999 data && chmod -R 750 data
+# mkdir -p logs/binlog && chown -R 999:999 logs/binlog && chmod -R 750 logs/binlog
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8.4}
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mydb}
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/:/var/lib/mysql
+      - ./logs:/var/log/mysql
+      - ./my.cnf:/etc/my.cnf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
