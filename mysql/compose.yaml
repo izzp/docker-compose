@@ -1,4 +1,5 @@
 # mkdir -p data && chown -R 999:999 data && chmod -R 750 data
+# mkdir -p logs && chown -R 999:999 logs && chmod -R 750 logs
 # mkdir -p logs/binlog && chown -R 999:999 logs/binlog && chmod -R 750 logs/binlog
 services:
   mysql:
