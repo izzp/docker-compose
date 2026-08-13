@@ -16,3 +16,4 @@
 12. [Tomcat](./tomcat)
 13. [uptime-kuma](./uptime-kuma)
 14. [Vaultwarden](./vaultwarden)
+15. [opencode](./opencode)

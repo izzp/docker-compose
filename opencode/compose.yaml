@@ -1,0 +1,30 @@
+services:
+  # 服务名：opencode
+  opencode:
+    # 官方 Docker 镜像
+    image: ghcr.io/anomalyco/opencode
+    # 容器名称
+    container_name: opencode
+    # 开机自启、崩溃自动重启
+    restart: unless-stopped
+    # 端口映射：宿主机高位端口 30996 -> 容器 4096
+    ports:
+      - "30996:4096"
+    # 环境变量配置
+    environment:
+      # 访问密码（强烈建议修改为强密码）
+      OPENCODE_SERVER_PASSWORD: "your-secure-password"
+      # 登录用户名（可自定义）
+      OPENCODE_SERVER_USERNAME: "opencode"
+    # 数据持久化（宿主机路径:容器路径）
+    volumes:
+      # 配置文件持久化
+      - ./opencode-config:/root/.config/opencode
+      # 会话数据持久化
+      - ./opencode-data:/root/.local/share/opencode
+      # 项目代码目录（放入要编辑的项目）
+      - ./project:/work
+    # 容器内工作目录，对应项目代码目录
+    working_dir: /work
+    # 启动命令：web 模式，监听所有网卡，端口 4096
+    command: ["web", "--hostname", "0.0.0.0", "--port", "4096"]
